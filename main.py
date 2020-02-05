@@ -1,7 +1,7 @@
 import os
 import urllib.request
 from app import app
-from flask import Flask, request, redirect, jsonify
+from flask import Flask, request, redirect, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -31,6 +31,10 @@ def upload_file():
 		resp = jsonify({'message' : 'Allowed file types are png, jpg, jpeg'})
 		resp.status_code = 400
 		return resp
+
+@app.route('/image/<path:filename>', methods=['GET'])
+def get_image(filename):  
+    return send_from_directory(app.static_folder, filename)
 
 if __name__ == "__main__":
     app.run()
